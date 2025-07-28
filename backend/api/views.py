@@ -19,7 +19,14 @@ class NoteListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
+class NoteDelete(generics.DestroyAPIView):
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        User = self.request.user
+        return Note.objects.filter(author=User)
 
 class CreateUserView(generics.ListCreateAPIView):
     queryset = User.objects.all()
